@@ -19,7 +19,7 @@ const fetchMyIP = function(callback) {
 };
 
 const fetchCoordsByIP = (ip, callback) => {
-  request('https://freegeoip.app/json/', (error, response, body) => {
+  request(`https://freegeoip.app/json/${ip}`, (error, response, body) => {
     if (error) {
       return callback(error, null);
     }
@@ -37,7 +37,26 @@ const fetchCoordsByIP = (ip, callback) => {
   });
 };
 
+const fetchISSFlyOverTimes = (coords, callback) => {
+  request(`http://api.open-notify.org/iss-pass.json?lat=${coords.latitude}&lon=${coords.longitude}`, (error, response, body) => {
+    if (error) {
+      return callback(error, null);
+    }
+    if (response.statusCode !== 200) {
+      return callback(Error(`${response.statusCode}: when fetching flyover times. ${body}`), null);
+    }
+    
+    const flyOverTimes = JSON.parse(body).response;
+    console.log(flyOverTimes);
+    return callback(null, flyOverTimes);
+  });
+};
+
+
+
+
 module.exports = {
   fetchMyIP,
-  fetchCoordsByIP
+  fetchCoordsByIP,
+  fetchISSFlyOverTimes
 };
