@@ -16,10 +16,10 @@ const nextISSTimesForMyLocation = (callback) => {
           return callback(error, null);
         }
         callback(null, flyOverTimes);
-      }) 
-    })
-  }) 
-}
+      });
+    });
+  });
+};
 
 const fetchMyIP = function(callback) {
 
@@ -66,7 +66,6 @@ const fetchISSFlyOverTimes = (coords, callback) => {
     if (response.statusCode !== 200) {
       return callback(Error(`${response.statusCode}: when fetching flyover times. ${body}`), null);
     }
-    console.log(body)
     const flyOverTimes = JSON.parse(body).response;
     // console.log(flyOverTimes);
     return callback(null, flyOverTimes);
